@@ -40,7 +40,7 @@ export function Contact() {
               <span className="text-gradient">algo juntos?</span>
             </>
           }
-          description="Estou aberto a oportunidades como Software ou Full Stack Developer, além de projetos que envolvam frontend, APIs, banco de dados e integração de IA. O caminho mais rápido é o e-mail ou o LinkedIn."
+          description="Estou aberto a oportunidades como desenvolvedor de Software ou Full Stack Developer, além de projetos que envolvam frontend, APIs, banco de dados e integração de IA. O caminho mais rápido é o e-mail ou o LinkedIn."
         />
 
         <Reveal delay={160}>
