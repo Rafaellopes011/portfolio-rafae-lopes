@@ -28,7 +28,7 @@ export function StackDiagram() {
       {/* glow de fundo */}
       <div
         aria-hidden="true"
-        className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-accent/10 via-transparent to-accent-2/10 blur-2xl"
+        className="glow-duo absolute -inset-6 rounded-[2rem]"
       />
 
       <div className="card animate-float-slow relative overflow-hidden p-1.5 shadow-[0_40px_90px_-50px_rgba(0,0,0,1)]">

@@ -107,7 +107,7 @@ export function Gallery({ images }: GalleryProps) {
           role="dialog"
           aria-modal="true"
           aria-label={active.caption ?? active.alt}
-          className="animate-fade-in fixed inset-0 z-[80] flex items-center justify-center bg-base/92 p-4 backdrop-blur-md sm:p-8"
+          className="animate-fade-in fixed inset-0 z-[80] flex items-center justify-center bg-base/[0.97] p-4 sm:bg-base/92 sm:p-8 sm:backdrop-blur-md"
           onClick={close}
         >
           <button

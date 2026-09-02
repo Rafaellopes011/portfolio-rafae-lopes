@@ -48,7 +48,6 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
@@ -126,38 +125,86 @@ body {
     box-shadow 0.35s ease;
 }
 
+/* Efeitos de hover só existem em ponteiros de verdade. Em telas de toque
+   o `:hover` fica "grudado" após o tap e força repaints sem nenhum ganho. */
 @utility card-hover {
-  &:hover {
-    border-color: var(--color-line-strong);
-    /* `translate` (e não `transform`) para não conflitar com a animação
-       de entrada .reveal, que já usa transform. */
-    translate: 0 -3px;
-    box-shadow:
-      0 1px 0 0 color-mix(in oklab, var(--color-accent) 12%, transparent) inset,
-      0 20px 45px -25px rgba(0, 0, 0, 0.9);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--color-line-strong);
+      /* `translate` (e não `transform`) para não conflitar com a animação
+         de entrada .reveal, que já usa transform. */
+      translate: 0 -3px;
+      box-shadow:
+        0 1px 0 0 color-mix(in oklab, var(--color-accent) 12%, transparent)
+          inset,
+        0 20px 45px -25px rgba(0, 0, 0, 0.9);
+    }
   }
 }
 
 /* Linha de brilho superior sutil */
 @utility hairline-top {
-  &::before {
-    content: "";
-    position: absolute;
-    inset-inline: 15%;
-    top: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, var(--color-accent) 45%, transparent),
-      transparent
+  @media (hover: hover) {
+    &::before {
+      content: "";
+      position: absolute;
+      inset-inline: 15%;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in oklab, var(--color-accent) 45%, transparent),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    &:hover::before {
+      opacity: 1;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* halos de fundo                                                      */
+/* ------------------------------------------------------------------ */
+
+/* `filter: blur(120px)` em elementos de várias centenas de pixels é o
+   maior gargalo de renderização em GPU de celular: cada halo vira uma
+   textura offscreen reprocessada a cada frame de scroll. Um gradiente
+   radial produz o mesmo resultado visual com custo de pintura zero. */
+/* Cores literais (e não `color-mix`) para não gerar regra de fallback:
+   o fallback do Tailwind perde a transparência e vira um blob sólido. */
+@utility glow {
+  --glow-near: rgba(91, 140, 255, 0.11);
+  --glow-far: rgba(91, 140, 255, 0.04);
+  background-image: radial-gradient(
+    closest-side,
+    var(--glow-near),
+    var(--glow-far) 55%,
+    transparent 100%
+  );
+}
+
+@utility glow-2 {
+  --glow-near: rgba(124, 92, 255, 0.09);
+  --glow-far: rgba(124, 92, 255, 0.03);
+}
+
+/* Halo diagonal usado atrás de cards (substitui `blur-2xl` decorativo). */
+@utility glow-duo {
+  background-image:
+    radial-gradient(
+      60% 60% at 20% 15%,
+      rgba(91, 140, 255, 0.13),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 60% at 85% 85%,
+      rgba(124, 92, 255, 0.11),
+      transparent 70%
     );
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  &:hover::before {
-    opacity: 1;
-  }
 }
 
 /* Fundo pontilhado técnico */
@@ -174,6 +221,10 @@ body {
 /* animações                                                           */
 /* ------------------------------------------------------------------ */
 
+/* Sem `will-change` fixo: a página tem dezenas de `.reveal` e cada um
+   viraria uma camada de composição permanente — em celular isso estoura
+   a memória de GPU e engasga o scroll. O hint entra só enquanto o
+   elemento ainda vai animar e sai assim que ele aparece. */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -187,6 +238,22 @@ body {
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+
+.reveal.is-settled {
+  will-change: auto;
+  transition: none;
+}
+
+/* Em telas pequenas a entrada é só um fade curto: sem translate não há
+   invalidação de layout/composição durante o scroll. */
+@media (max-width: 767px) {
+  .reveal {
+    transform: none;
+    transition:
+      opacity 0.4s ease-out,
+      transform 0.4s ease-out;
+  }
 }
 
 @keyframes float-slow {
@@ -211,15 +278,6 @@ body {
   }
 }
 
-@keyframes marquee-x {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -240,9 +298,14 @@ body {
   }
 }
 
-.animate-float-slow {
-  animation: float-slow 9s ease-in-out infinite;
+/* Animação decorativa e infinita: mantém a GPU acordada o tempo todo.
+   Só vale a pena onde há espaço para percebê-la. */
+@media (min-width: 1024px) {
+  .animate-float-slow {
+    animation: float-slow 9s ease-in-out infinite;
+  }
 }
+
 .animate-pulse-ring {
   animation: pulse-ring 2.4s ease-out infinite;
 }
@@ -251,13 +314,6 @@ body {
 }
 .animate-zoom-in {
   animation: zoom-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.marquee-track {
-  animation: marquee-x 38s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
 }
 
 /* Respeita preferência de menos movimento */
@@ -275,5 +331,6 @@ body {
   .reveal {
     opacity: 1;
     transform: none;
+    will-change: auto;
   }
 }

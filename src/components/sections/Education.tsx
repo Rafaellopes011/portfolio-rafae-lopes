@@ -89,7 +89,7 @@ export function Education() {
           >
             <div
               aria-hidden="true"
-              className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-accent-2/[0.10] blur-3xl"
+              className="glow glow-2 absolute -right-16 -top-16 h-44 w-44"
             />
 
             <div className="relative">

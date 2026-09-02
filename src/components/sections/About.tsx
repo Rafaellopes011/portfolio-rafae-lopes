@@ -15,7 +15,7 @@ export function About() {
             <div className="relative mx-auto max-w-sm lg:sticky lg:top-28">
               <div
                 aria-hidden="true"
-                className="absolute -inset-4 rounded-[1.75rem] bg-gradient-to-br from-accent/12 via-transparent to-accent-2/10 blur-2xl"
+                className="glow-duo absolute -inset-4 rounded-[1.75rem]"
               />
               <div className="card relative overflow-hidden p-2">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[0.75rem]">

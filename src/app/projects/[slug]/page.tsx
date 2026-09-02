@@ -81,7 +81,7 @@ export default async function ProjectPage({ params }: PageProps) {
       <header className="relative overflow-hidden pt-28 pb-14 md:pt-36 md:pb-16">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="grid-bg absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_70%_55%_at_50%_0%,#000_10%,transparent_100%)]" />
-          <div className="absolute -top-32 left-1/2 h-[26rem] w-[46rem] -translate-x-1/2 rounded-full bg-accent/[0.08] blur-[120px]" />
+          <div className="glow absolute -top-32 left-1/2 h-[26rem] w-[46rem] -translate-x-1/2" />
         </div>
 
         <div className="container-page relative">
@@ -237,7 +237,7 @@ export default async function ProjectPage({ params }: PageProps) {
               >
                 <div
                   aria-hidden="true"
-                  className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-accent/[0.10] blur-3xl"
+                  className="glow absolute -right-16 -top-16 h-40 w-40"
                 />
                 <span className="relative text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-accent-soft">
                   A solução
@@ -398,7 +398,7 @@ export default async function ProjectPage({ params }: PageProps) {
           <Reveal className="card relative overflow-hidden p-7 md:p-9">
             <div
               aria-hidden="true"
-              className="absolute -left-20 -top-20 h-52 w-52 rounded-full bg-accent-2/[0.08] blur-3xl"
+              className="glow glow-2 absolute -left-20 -top-20 h-52 w-52"
             />
             <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-2xl">

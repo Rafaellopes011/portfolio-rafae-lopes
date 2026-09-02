@@ -27,7 +27,7 @@ export function Contact() {
       className="relative scroll-mt-24 overflow-hidden border-t border-line/70 py-24 md:py-32"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute bottom-0 left-1/2 h-[24rem] w-[44rem] -translate-x-1/2 translate-y-1/3 rounded-full bg-accent/[0.09] blur-[130px]" />
+        <div className="glow absolute bottom-0 left-1/2 h-[24rem] w-[44rem] -translate-x-1/2 translate-y-1/3" />
       </div>
 
       <div className="container-page relative">

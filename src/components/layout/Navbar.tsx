@@ -19,10 +19,24 @@ export function Navbar() {
 
   /* --- estado de scroll (navbar compacta + blur) --- */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    /* Uma sentinela no topo troca o estado via IntersectionObserver, em vez
+       de rodar um handler de scroll (e um setState) a cada frame. */
+    const sentinel = document.createElement("div");
+    sentinel.setAttribute("aria-hidden", "true");
+    sentinel.style.cssText =
+      "position:absolute;top:0;left:0;height:25px;width:1px;pointer-events:none";
+    document.body.appendChild(sentinel);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    observer.observe(sentinel);
+
+    return () => {
+      observer.disconnect();
+      sentinel.remove();
+    };
   }, []);
 
   /* --- scroll spy: destaca o item da seção visível --- */
@@ -71,11 +85,14 @@ export function Navbar() {
 
   const close = useCallback(() => setOpen(false), []);
 
+  /* Desfocar o fundo de uma barra fixa obriga o navegador a reamostrar todo
+     o conteúdo atrás dela a cada frame de scroll — caríssimo em celular. No
+     mobile a barra fica opaca; o efeito só onde há GPU sobrando. */
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled || open
-          ? "border-b border-line/80 bg-base/80 backdrop-blur-xl"
+          ? "border-b border-line/80 bg-base lg:bg-base/80 lg:backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -156,7 +173,7 @@ export function Navbar() {
       <div
         id="menu-mobile"
         hidden={!open}
-        className="border-t border-line bg-base/95 backdrop-blur-xl lg:hidden"
+        className="border-t border-line bg-base lg:hidden"
       >
         <ul className="container-page flex flex-col gap-1 py-5">
           {navItems.map((item, index) => (

@@ -18,7 +18,7 @@ export default function ProjectsPage() {
       <header className="relative overflow-hidden pt-28 pb-12 md:pt-36 md:pb-16">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="grid-bg absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_70%_55%_at_50%_0%,#000_10%,transparent_100%)]" />
-          <div className="absolute -top-32 left-1/2 h-[24rem] w-[42rem] -translate-x-1/2 rounded-full bg-accent/[0.08] blur-[120px]" />
+          <div className="glow absolute -top-32 left-1/2 h-[24rem] w-[42rem] -translate-x-1/2" />
         </div>
 
         <div className="container-page relative">

@@ -14,8 +14,8 @@ export function Hero() {
       {/* fundo: grade pontilhada + glow muito sutil */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div className="grid-bg absolute inset-0 opacity-[0.55] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_0%,#000_20%,transparent_100%)]" />
-        <div className="absolute -top-40 left-1/2 h-[34rem] w-[52rem] -translate-x-1/2 rounded-full bg-accent/[0.09] blur-[130px]" />
-        <div className="absolute -right-32 top-40 h-[26rem] w-[26rem] rounded-full bg-accent-2/[0.07] blur-[120px]" />
+        <div className="glow absolute -top-40 left-1/2 h-[34rem] w-[52rem] -translate-x-1/2" />
+        <div className="glow glow-2 absolute -right-32 top-40 hidden h-[26rem] w-[26rem] md:block" />
       </div>
 
       <div className="container-page relative">
@@ -24,7 +24,7 @@ export function Hero() {
           <div>
             {profile.availabilityBadge ? (
               <Reveal>
-                <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-2/60 px-3.5 py-1.5 text-xs font-medium text-ink-muted backdrop-blur">
+                <span className="inline-flex items-center gap-2.5 rounded-full border border-line bg-surface-2 px-3.5 py-1.5 text-xs font-medium text-ink-muted">
                   <span
                     aria-hidden="true"
                     className="animate-pulse-ring h-1.5 w-1.5 rounded-full bg-accent"
