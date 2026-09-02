@@ -24,7 +24,7 @@ export function TechStack() {
               <span className="text-gradient">no dia a dia</span>
             </>
           }
-          description="Organizada por camada da aplicação. Sem barras de porcentagem — nível de conhecimento não cabe em um número arbitrário."
+          description="Organizada por camada da aplicação. Com áreas de foco e tecnologias que eu uso com frequência."
         />
 
         <div className="mt-14 grid gap-4 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
