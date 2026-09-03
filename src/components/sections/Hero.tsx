@@ -1,4 +1,4 @@
-import { ArrowRight, Github, Linkedin } from "lucide-react";
+import { ArrowRight, FileText, Github, Linkedin } from "lucide-react";
 import { profile } from "@/data/profile";
 import { socialByID } from "@/data/social";
 import { ButtonLink } from "@/components/ui/Button";
@@ -113,6 +113,16 @@ export function Hero() {
                     className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                     aria-hidden="true"
                   />
+                </ButtonLink>
+
+                <ButtonLink
+                  href="/rafael-lopes-curriculo.pdf"
+                  variant="secondary"
+                  file
+                  aria-label="Abrir currículo em PDF em nova aba"
+                >
+                  <FileText className="h-4 w-4" aria-hidden="true" />
+                  Currículo
                 </ButtonLink>
 
                 <ButtonLink

@@ -28,6 +28,8 @@ interface ButtonLinkProps {
   size?: Size;
   /** Abre em nova aba. Links http(s) externos. */
   external?: boolean;
+  /** Arquivo estático (ex.: PDF): abre em nova aba, fora do roteador do Next. */
+  file?: boolean;
   className?: string;
   "aria-label"?: string;
 }
@@ -44,13 +46,14 @@ export function ButtonLink({
   variant = "primary",
   size = "md",
   external = false,
+  file = false,
   className = "",
   ...rest
 }: ButtonLinkProps) {
   const classes = `${base} ${variants[variant]} ${sizes[size]} ${className}`;
 
-  if (external || NON_ROUTED_HREF.test(href)) {
-    const opensNewTab = external && /^https?:/i.test(href);
+  if (external || file || NON_ROUTED_HREF.test(href)) {
+    const opensNewTab = file || (external && /^https?:/i.test(href));
 
     return (
       <a
