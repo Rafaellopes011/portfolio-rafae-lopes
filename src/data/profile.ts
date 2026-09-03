@@ -22,7 +22,7 @@ export const profile = {
    * Selo exibido no topo do Hero.
    * Deixe como string vazia ("") para não exibir nenhum selo.
    */
-  availabilityBadge: "Disponível para novas oportunidades",
+  availabilityBadge: "Full Stack Developer",
 
   /** Frase de apoio do Hero — uma linha, sem repetir a stack completa. */
   tagline:
