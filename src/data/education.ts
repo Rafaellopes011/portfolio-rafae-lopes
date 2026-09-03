@@ -3,7 +3,6 @@ export interface EducationItem {
   institution: string;
   course: string;
   period: string;
-  status: string;
   location?: string;
   description: string;
   activities?: string[];
@@ -16,10 +15,9 @@ export const education: EducationItem[] = [
     course: "Ciência da Computação",
     // Atualize o semestre a cada início de período letivo.
     period: "6º semestre — em andamento",
-    status: "Cursando · 6º semestre",
     location: "Fortaleza, CE",
     description:
-      "Atualmente no 6º semestre da graduação, com base sólida em algoritmos, estruturas de dados, engenharia de software, bancos de dados e arquitetura de sistemas.",
+      "Base em algoritmos, estruturas de dados, engenharia de software, bancos de dados e arquitetura de sistemas.",
     activities: [
       "Desenvolvimento de aplicações completas como prática de curso e projetos próprios",
       "Atuação em pesquisa acadêmica como bolsista de Iniciação Científica",
@@ -44,10 +42,29 @@ export const research: ResearchItem = {
   program: "Edital de Equipes — Vice-Reitoria de Pesquisa",
   lab: "Laboratório Azul",
   description:
-    "Bolsista de Iniciação Científica selecionado pelo Edital de Equipes, integrando projeto do Laboratório Azul da Vice-Reitoria de Pesquisa da UNIFOR.",
+    "Bolsista selecionado pelo Edital de Equipes, integrando projeto do Laboratório Azul da Vice-Reitoria de Pesquisa da UNIFOR, na frente técnica de desenvolvimento.",
   points: [
     "Seleção por edital competitivo de formação de equipes de pesquisa",
-    "Projeto vinculado ao Laboratório Azul da Vice-Reitoria de Pesquisa",
     "Atuação técnica em desenvolvimento dentro de um contexto de pesquisa aplicada",
   ],
 };
+
+export interface ProgramItem {
+  id: string;
+  title: string;
+  organization: string;
+  year: string;
+  description: string;
+}
+
+/** Programas e seleções fora da graduação. */
+export const programs: ProgramItem[] = [
+  {
+    id: "jornada-link",
+    title: "Jornada Link",
+    organization: "Link School of Business",
+    year: "2022",
+    description:
+      "Selecionado para a Jornada Link, integrando o único trio nordestino da edição — programa voltado a empreendedorismo, inovação e resolução de desafios.",
+  },
+];

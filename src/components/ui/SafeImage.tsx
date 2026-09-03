@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface SafeImageProps {
   src: string;
@@ -30,6 +30,18 @@ export function SafeImage({
 }: SafeImageProps) {
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  /* Imagens do cache (ou com `priority`) costumam terminar de carregar antes
+     da hidratação — nesse caso `onLoad` nunca dispara e o elemento ficaria
+     preso em opacity 0. Na montagem, conferimos o estado real do <img>. */
+  useEffect(() => {
+    const node = imageRef.current;
+    if (!node?.complete) return;
+
+    if (node.naturalWidth === 0) setFailed(true);
+    else setLoaded(true);
+  }, []);
 
   if (failed) {
     return (
@@ -49,6 +61,7 @@ export function SafeImage({
   return (
     <>
       <Image
+        ref={imageRef}
         src={src}
         alt={alt}
         fill

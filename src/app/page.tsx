@@ -11,9 +11,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <About />
-      <ExperienceSection />
       <Projects />
+      <ExperienceSection />
+      <About />
       <TechStack />
       <Education />
       <Certifications />

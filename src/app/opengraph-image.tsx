@@ -41,7 +41,9 @@ export default function OpenGraphImage() {
           >
             {profile.initials}
           </div>
-          <div style={{ fontSize: 26, color: "#98a3b5" }}>{profile.name}</div>
+          <div style={{ fontSize: 26, color: "#98a3b5" }}>
+            {profile.location}
+          </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -53,18 +55,19 @@ export default function OpenGraphImage() {
               lineHeight: 1.05,
             }}
           >
-            {profile.role}
+            {profile.name}
           </div>
           <div
             style={{
-              fontSize: 78,
-              fontWeight: 800,
-              letterSpacing: -2.5,
-              lineHeight: 1.05,
+              fontSize: 46,
+              fontWeight: 700,
+              letterSpacing: -1,
+              lineHeight: 1.2,
+              marginTop: 10,
               color: "#7ea2ff",
             }}
           >
-            {`& ${profile.secondaryRole}`}
+            {profile.role}
           </div>
         </div>
 

@@ -93,6 +93,11 @@ export default function RootLayout({
         >
           Pular para o conteúdo
         </a>
+        {/* grão de filme: textura fixa, pintada uma vez */}
+        <div
+          aria-hidden="true"
+          className="grain pointer-events-none fixed inset-0 z-[60] opacity-[0.035] mix-blend-overlay"
+        />
         <Navbar />
         <main id="conteudo">{children}</main>
         <Footer />

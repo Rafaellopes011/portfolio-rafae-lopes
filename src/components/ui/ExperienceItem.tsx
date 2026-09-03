@@ -1,6 +1,4 @@
-import { Check } from "lucide-react";
 import type { Experience } from "@/data/experience";
-import { TechBadge } from "./TechBadge";
 import { Reveal } from "./Reveal";
 
 interface ExperienceItemProps {
@@ -16,17 +14,17 @@ export function ExperienceItem({
   delay = 0,
 }: ExperienceItemProps) {
   return (
-    <li className="relative grid gap-6 pl-9 md:grid-cols-[10rem_1fr] md:gap-10 md:pl-0">
+    <li className="relative grid gap-4 pl-8 md:grid-cols-[11.5rem_1fr] md:gap-10 md:pl-0">
       {/* trilho da timeline */}
       <span
         aria-hidden="true"
-        className={`absolute left-[0.4375rem] top-2.5 w-px bg-gradient-to-b from-line-strong via-line to-transparent md:left-[10.4375rem] ${
-          isLast ? "h-16" : "h-full"
+        className={`absolute left-[0.4375rem] top-3 w-px bg-gradient-to-b from-accent/40 via-line-strong to-transparent md:left-[11.9375rem] ${
+          isLast ? "h-20" : "h-full"
         }`}
       />
       <span
         aria-hidden="true"
-        className={`absolute left-0 top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full border-2 md:left-[10rem] ${
+        className={`absolute left-0 top-2 flex h-3.5 w-3.5 rounded-full border-2 md:left-[11.5rem] ${
           experience.current
             ? "animate-pulse-ring border-accent bg-accent"
             : "border-line-strong bg-surface-3"
@@ -34,44 +32,40 @@ export function ExperienceItem({
       />
 
       {/* período */}
-      <Reveal delay={delay} className="md:pr-10 md:text-right">
+      <Reveal delay={delay} className="md:pr-8 md:text-right">
         <p className="font-[family-name:var(--font-mono)] text-[0.8125rem] font-medium text-accent-soft">
           {experience.period}
         </p>
-        {experience.kind ? (
-          <p className="mt-1 text-xs text-ink-dim">{experience.kind}</p>
-        ) : null}
-        {experience.location ? (
-          <p className="mt-0.5 text-xs text-ink-dim">{experience.location}</p>
-        ) : null}
+        <p className="mt-1 text-xs text-ink-dim">
+          {[experience.kind, experience.location]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
       </Reveal>
 
       {/* conteúdo */}
-      <Reveal
-        delay={delay + 80}
-        className="card card-hover hairline-top -mt-1 p-6 md:p-7"
-      >
-        <h3 className="font-[family-name:var(--font-display)] text-xl font-bold tracking-tight text-ink">
-          {experience.role}
-        </h3>
-        <p className="mt-1 text-sm font-medium text-accent-soft">
+      <Reveal delay={delay + 70} className="pb-2">
+        <h3 className="font-[family-name:var(--font-display)] text-2xl font-bold tracking-[-0.02em] text-ink sm:text-[1.75rem]">
           {experience.company}
+        </h3>
+        <p className="mt-1.5 text-[0.9375rem] font-semibold text-accent-soft">
+          {experience.role}
         </p>
 
-        <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-muted">
+        <p className="mt-4 max-w-2xl text-[0.9375rem] leading-[1.75] text-ink-muted">
           {experience.description}
         </p>
 
         {experience.responsibilities.length > 0 ? (
-          <ul className="mt-5 space-y-2.5">
+          <ul className="mt-5 max-w-2xl space-y-2.5">
             {experience.responsibilities.map((item) => (
               <li
                 key={item}
-                className="flex gap-2.5 text-[0.875rem] leading-relaxed text-ink-muted"
+                className="flex gap-3 text-[0.875rem] leading-relaxed text-ink-muted"
               >
-                <Check
-                  className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                <span
                   aria-hidden="true"
+                  className="mt-[0.5rem] h-1 w-1 shrink-0 rounded-full bg-accent"
                 />
                 <span>{item}</span>
               </li>
@@ -80,13 +74,9 @@ export function ExperienceItem({
         ) : null}
 
         {experience.technologies.length > 0 ? (
-          <ul className="mt-6 flex flex-wrap gap-1.5 border-t border-line pt-5">
-            {experience.technologies.map((tech) => (
-              <li key={tech}>
-                <TechBadge label={tech} />
-              </li>
-            ))}
-          </ul>
+          <p className="mt-5 font-[family-name:var(--font-mono)] text-[0.8125rem] leading-relaxed text-ink-dim">
+            {experience.technologies.join("  ·  ")}
+          </p>
         ) : null}
       </Reveal>
     </li>

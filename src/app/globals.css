@@ -2,6 +2,10 @@
 
 @theme {
   /* ---------- superfícies ---------- */
+  /* ATENÇÃO: `--color-base` registra a cor `base`, o que faz o Tailwind
+     interpretar a classe `text-base` como COR (quase preta) em vez de
+     tamanho de fonte. Nunca use `text-base` neste projeto — escreva
+     `text-[1rem]`. As demais (`bg-base`, `border-base`…) são seguras. */
   --color-base: #06080d;
   --color-surface: #0a0d14;
   --color-surface-2: #10141d;
@@ -207,6 +211,60 @@ body {
     );
 }
 
+/* ------------------------------------------------------------------ */
+/* assinatura visual                                                    */
+/* ------------------------------------------------------------------ */
+
+/* Grão de filme sobre a página inteira. Uma textura de 128px repetida
+   custa uma pintura só — sem blur, sem reflow, sem repaint no scroll. */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+}
+
+/* Marcas de corte no canto — o motivo que se repete na foto do topo,
+   nos screenshots dos projetos e no bloco de contato. */
+@utility crop-marks {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-accent) 55%, transparent);
+    transition:
+      width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  &::after {
+    right: -1px;
+    bottom: -1px;
+    border-left: 0;
+    border-top: 0;
+  }
+  @media (hover: hover) {
+    &:hover::before,
+    &:hover::after {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+}
+
+/* Numeral de seção em contorno — peso tipográfico sem peso de tinta. */
+@utility numeral-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1px
+    color-mix(in oklab, var(--color-accent) 45%, transparent);
+}
+
 /* Fundo pontilhado técnico */
 @utility grid-bg {
   background-image: radial-gradient(
@@ -256,16 +314,6 @@ body {
   }
 }
 
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -14px, 0);
-  }
-}
-
 @keyframes pulse-ring {
   0% {
     box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 45%, transparent);
@@ -295,14 +343,6 @@ body {
   to {
     opacity: 1;
     transform: scale(1);
-  }
-}
-
-/* Animação decorativa e infinita: mantém a GPU acordada o tempo todo.
-   Só vale a pena onde há espaço para percebê-la. */
-@media (min-width: 1024px) {
-  .animate-float-slow {
-    animation: float-slow 9s ease-in-out infinite;
   }
 }
 

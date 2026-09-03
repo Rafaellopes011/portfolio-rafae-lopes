@@ -2,49 +2,76 @@ import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
 interface SectionTitleProps {
-  /** Rótulo pequeno acima do título. */
-  eyebrow?: string;
+  /** Índice editorial da seção: "01", "02"… */
+  index?: string;
   title: ReactNode;
   description?: ReactNode;
   align?: "left" | "center";
+  /** Ação alinhada ao título no desktop (ex.: "Ver todos"). */
+  action?: ReactNode;
   className?: string;
 }
 
+/**
+ * Cabeçalho de seção: numeral + filete que atravessa a largura, título
+ * em display. O numeral dá a sequência de leitura sem precisar de um
+ * rótulo em caixa alta repetindo o próprio título logo abaixo.
+ */
 export function SectionTitle({
-  eyebrow,
+  index,
   title,
   description,
   align = "left",
+  action,
   className = "",
 }: SectionTitleProps) {
   const isCenter = align === "center";
 
   return (
     <div
-      className={`${isCenter ? "mx-auto max-w-2xl text-center" : "max-w-2xl"} ${className}`}
+      className={`${
+        isCenter
+          ? "mx-auto max-w-2xl text-center"
+          : "flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10"
+      } ${className}`}
     >
-      {eyebrow ? (
+      <div className={isCenter ? "" : "max-w-2xl"}>
         <Reveal>
-          <span
-            className={`inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-accent-soft`}
+          <div
+            className={`flex items-center gap-4 ${isCenter ? "justify-center" : ""}`}
           >
-            <span className="h-px w-6 bg-accent/60" aria-hidden="true" />
-            {eyebrow}
-          </span>
+            {index ? (
+              <span className="font-[family-name:var(--font-mono)] text-[0.8125rem] font-medium tracking-[0.1em] text-accent">
+                {index}
+              </span>
+            ) : null}
+            <span
+              aria-hidden="true"
+              className={`h-px bg-gradient-to-r from-accent/50 via-line-strong to-transparent ${
+                isCenter ? "w-16" : "w-full max-w-[14rem] flex-1"
+              }`}
+            />
+          </div>
         </Reveal>
-      ) : null}
 
-      <Reveal delay={60}>
-        <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold leading-[1.1] tracking-tight text-ink sm:text-4xl md:text-[2.75rem]">
-          {title}
-        </h2>
-      </Reveal>
+        <Reveal delay={60}>
+          <h2 className="mt-5 font-[family-name:var(--font-display)] text-[2.25rem] font-bold leading-[1.05] tracking-[-0.03em] text-ink sm:text-[2.75rem]">
+            {title}
+          </h2>
+        </Reveal>
 
-      {description ? (
-        <Reveal delay={120}>
-          <p className="mt-4 text-base leading-relaxed text-ink-muted sm:text-[1.0625rem]">
-            {description}
-          </p>
+        {description ? (
+          <Reveal delay={110}>
+            <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-muted">
+              {description}
+            </p>
+          </Reveal>
+        ) : null}
+      </div>
+
+      {action && !isCenter ? (
+        <Reveal delay={140} className="shrink-0">
+          {action}
         </Reveal>
       ) : null}
     </div>

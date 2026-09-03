@@ -48,12 +48,12 @@ export default function ProjectsPage() {
         </div>
       </header>
 
-      <div className="container-page space-y-8 md:space-y-10">
+      <div className="container-page space-y-10 md:space-y-14">
         {allProjects.map((project, index) => (
           <ProjectCard
             key={project.slug}
             project={project}
-            reversed={index % 2 === 1}
+            index={index + 1}
             priority={index === 0}
           />
         ))}

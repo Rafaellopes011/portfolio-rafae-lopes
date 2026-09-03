@@ -2,7 +2,7 @@
 
 # Rafael Lopes — Portfólio
 
-**Software Developer & Full Stack Developer**
+**Full Stack Developer**
 
 Portfólio pessoal construído com Next.js 15, TypeScript e Tailwind CSS v4.
 
@@ -87,7 +87,7 @@ src/
 ├─ components/
 │  ├─ layout/                  # Navbar, Footer
 │  ├─ sections/                # Hero, About, Experience, Projects, ...
-│  └─ ui/                      # ProjectCard, TechBadge, Gallery, Reveal, ...
+│  └─ ui/                      # ProjectCard, StackChain, Gallery, Reveal, ...
 │
 ├─ data/                       # ← conteúdo do site (editar aqui)
 │  ├─ profile.ts               # nome, headline, bio, foto

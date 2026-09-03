@@ -15,7 +15,7 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { BrowserFrame } from "@/components/ui/BrowserFrame";
 import { Gallery } from "@/components/ui/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
-import { TechBadge } from "@/components/ui/TechBadge";
+import { StackChain } from "@/components/ui/StackChain";
 import { ButtonLink } from "@/components/ui/Button";
 
 interface PageProps {
@@ -101,14 +101,9 @@ export default async function ProjectPage({ params }: PageProps) {
           <div className="mt-9 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <div>
               <Reveal delay={60}>
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent-soft">
-                    {project.category}
-                  </span>
-                  <span className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-ink-dim">
-                    Case study
-                  </span>
-                </div>
+                <p className="font-[family-name:var(--font-mono)] text-[0.7rem] uppercase tracking-[0.18em] text-ink-dim">
+                  {project.category}
+                </p>
               </Reveal>
 
               <Reveal delay={110}>
@@ -145,10 +140,8 @@ export default async function ProjectPage({ params }: PageProps) {
                   <dt className="text-[0.7rem] uppercase tracking-[0.16em] text-ink-dim">
                     Stack
                   </dt>
-                  <dd className="mt-2 flex flex-wrap gap-1.5">
-                    {project.technologies.map((tech) => (
-                      <TechBadge key={tech} label={tech} />
-                    ))}
+                  <dd className="mt-2 font-[family-name:var(--font-mono)] text-[0.8125rem] leading-relaxed text-ink-muted">
+                    {project.technologies.join("  ·  ")}
                   </dd>
                 </div>
               </dl>
@@ -218,11 +211,11 @@ export default async function ProjectPage({ params }: PageProps) {
 
         {/* ================= problema / solução ================= */}
         {project.problem || project.solution ? (
-          <section className="grid gap-4 md:grid-cols-2">
+          <section className="grid gap-10 md:grid-cols-2 md:gap-14">
             {project.problem ? (
-              <Reveal className="card hairline-top p-7 md:p-8">
-                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-dim">
-                  O problema
+              <Reveal className="border-l-2 border-line-strong pl-6 md:pl-8">
+                <span className="font-[family-name:var(--font-mono)] text-[0.7rem] uppercase tracking-[0.18em] text-ink-dim">
+                  Problema
                 </span>
                 <p className="mt-4 text-[1rem] leading-[1.8] text-ink-muted">
                   {project.problem}
@@ -231,18 +224,11 @@ export default async function ProjectPage({ params }: PageProps) {
             ) : null}
 
             {project.solution ? (
-              <Reveal
-                delay={90}
-                className="card hairline-top relative overflow-hidden p-7 md:p-8"
-              >
-                <div
-                  aria-hidden="true"
-                  className="glow absolute -right-16 -top-16 h-40 w-40"
-                />
-                <span className="relative text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-accent-soft">
-                  A solução
+              <Reveal delay={90} className="border-l-2 border-accent pl-6 md:pl-8">
+                <span className="font-[family-name:var(--font-mono)] text-[0.7rem] uppercase tracking-[0.18em] text-accent-soft">
+                  Solução
                 </span>
-                <p className="relative mt-4 text-[1rem] leading-[1.8] text-ink-muted">
+                <p className="mt-4 text-[1rem] leading-[1.8] text-ink-muted">
                   {project.solution}
                 </p>
               </Reveal>
@@ -261,31 +247,23 @@ export default async function ProjectPage({ params }: PageProps) {
               </p>
             </Reveal>
 
-            <ol className="mt-9 grid gap-3 md:grid-cols-5">
+            <ol className="mt-9 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
               {project.flow.map((step, index) => (
                 <Reveal
                   key={step.step}
-                  delay={index * 70}
+                  delay={(index % 3) * 70}
                   as="li"
-                  className="card card-hover relative flex flex-col p-5"
+                  className="border-t border-line pt-5"
                 >
                   <span className="font-[family-name:var(--font-mono)] text-[0.7rem] text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-2.5 text-[0.9375rem] font-semibold leading-snug text-ink">
+                  <h3 className="mt-2 font-[family-name:var(--font-display)] text-[1rem] font-bold leading-snug text-ink">
                     {step.step}
                   </h3>
-                  <p className="mt-2 text-[0.8125rem] leading-relaxed text-ink-muted">
+                  <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-muted">
                     {step.detail}
                   </p>
-
-                  {/* seta conectora (apenas desktop) */}
-                  {index < project.flow!.length - 1 ? (
-                    <span
-                      aria-hidden="true"
-                      className="absolute -right-2.5 top-1/2 hidden h-px w-3 -translate-y-1/2 bg-line-strong md:block"
-                    />
-                  ) : null}
                 </Reveal>
               ))}
             </ol>
@@ -298,13 +276,13 @@ export default async function ProjectPage({ params }: PageProps) {
             <BlockTitle>Principais funcionalidades</BlockTitle>
           </Reveal>
 
-          <ul className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-9 grid gap-x-12 sm:grid-cols-2">
             {project.features.map((feature, index) => (
               <Reveal
                 key={feature.title}
-                delay={(index % 3) * 70}
+                delay={(index % 2) * 70}
                 as="li"
-                className="card card-hover hairline-top p-6"
+                className="border-b border-line py-5"
               >
                 <h3 className="flex items-start gap-2.5 text-[0.9375rem] font-semibold text-ink">
                   <Check
@@ -313,7 +291,7 @@ export default async function ProjectPage({ params }: PageProps) {
                   />
                   {feature.title}
                 </h3>
-                <p className="mt-2.5 pl-[1.625rem] text-[0.875rem] leading-relaxed text-ink-muted">
+                <p className="mt-2 pl-[1.625rem] text-[0.875rem] leading-relaxed text-ink-muted">
                   {feature.description}
                 </p>
               </Reveal>
@@ -324,41 +302,24 @@ export default async function ProjectPage({ params }: PageProps) {
         {/* ================= stack ================= */}
         <section>
           <Reveal>
-            <BlockTitle>Stack</BlockTitle>
+            <BlockTitle>Arquitetura</BlockTitle>
+            <p className="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-ink-muted">
+              As camadas do projeto, na ordem em que a aplicação as atravessa.
+            </p>
           </Reveal>
 
-          <div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {project.stack.map((group, index) => (
-              <Reveal
-                key={group.label}
-                delay={index * 70}
-                className="card card-hover p-6"
-              >
-                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-dim">
-                  {group.label}
-                </span>
-                <ul className="mt-3.5 space-y-2">
-                  {group.items.map((item) => (
-                    <li
-                      key={item}
-                      className="font-[family-name:var(--font-display)] text-[1.0625rem] font-semibold text-ink"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={80} className="mt-9">
+            <StackChain groups={project.stack} />
+          </Reveal>
 
           {project.technicalHighlights &&
           project.technicalHighlights.length > 0 ? (
-            <Reveal delay={120} className="card mt-4 p-7 md:p-8">
-              <h3 className="flex items-center gap-2.5 text-base font-semibold text-ink">
+            <Reveal delay={120} className="mt-14 border-t border-line pt-9">
+              <h3 className="flex items-center gap-2.5 text-[1rem] font-semibold text-ink">
                 <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
-                O que este projeto envolve tecnicamente
+                O que implementei
               </h3>
-              <ul className="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+              <ul className="mt-5 grid gap-x-12 gap-y-2.5 sm:grid-cols-2">
                 {project.technicalHighlights.map((item) => (
                   <li
                     key={item}
@@ -366,7 +327,7 @@ export default async function ProjectPage({ params }: PageProps) {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-accent"
+                      className="mt-[0.5rem] h-1 w-1 shrink-0 rounded-full bg-accent"
                     />
                     {item}
                   </li>

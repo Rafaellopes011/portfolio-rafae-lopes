@@ -69,7 +69,7 @@ export const experiences: Experience[] = [
     id: "unifor-ic",
     company: "Universidade de Fortaleza — UNIFOR",
     role: "Bolsista de Iniciação Científica",
-    period: " Março de 2026 - Atual",
+    period: "Março de 2026 — Atual",
     location: "Fortaleza, CE",
     kind: "Pesquisa",
     current: true,

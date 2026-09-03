@@ -1,89 +1,118 @@
-import { ArrowUpRight, BadgeCheck } from "lucide-react";
-import { certifications } from "@/data/certifications";
+import { ChevronDown } from "lucide-react";
+import { certifications, type Certification } from "@/data/certifications";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Reveal } from "@/components/ui/Reveal";
 
+interface IssuerGroup {
+  issuer: string;
+  items: Certification[];
+  /** Títulos sem repetição, para a linha de resumo. */
+  topics: string[];
+  range: string;
+}
+
+/** Agrupa por emissor: 13 certificados viram um bloco por instituição. */
+function groupByIssuer(list: Certification[]): IssuerGroup[] {
+  const map = new Map<string, Certification[]>();
+
+  for (const item of list) {
+    const bucket = map.get(item.issuer);
+    if (bucket) bucket.push(item);
+    else map.set(item.issuer, [item]);
+  }
+
+  return [...map.entries()].map(([issuer, items]) => {
+    const years = items.map((item) => item.issuedAt.slice(0, 4)).sort();
+    const first = years[0];
+    const last = years[years.length - 1];
+
+    return {
+      issuer,
+      items,
+      topics: [...new Set(items.map((item) => item.title))],
+      range: first === last ? first : `${first}–${last}`,
+    };
+  });
+}
+
 export function Certifications() {
+  const groups = groupByIssuer(certifications);
+
   return (
     <section
       id="certificados"
-      className="scroll-mt-24 border-t border-line/70 py-24 md:py-32"
+      className="scroll-mt-24 border-t border-line/70 bg-surface/30 py-20 md:py-32"
     >
       <div className="container-page">
-        <SectionTitle
-          eyebrow="Certificados"
-          title={
-            <>
-              Estudo contínuo,{" "}
-              <span className="text-gradient">com credencial</span>
-            </>
-          }
-          description="Cursos concluídos que sustentam a stack do dia a dia — do fundamento em lógica ao Angular e Node.js usados em produção."
-        />
+        <div className="grid gap-10 lg:grid-cols-[16rem_1fr] lg:gap-24">
+          <SectionTitle
+            index="06"
+            title="Certificações"
+            className="lg:sticky lg:top-28 lg:h-fit"
+          />
 
-        <ul className="mt-14 grid gap-3 md:mt-16 sm:grid-cols-2 lg:grid-cols-3">
-          {certifications.map((item, index) => {
-            const hasLink = Boolean(item.credentialUrl);
-
-            const content = (
-              <>
-                <div className="flex items-start justify-between gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-surface-2 text-accent-soft">
-                    <BadgeCheck className="h-[1.1rem] w-[1.1rem]" aria-hidden="true" />
-                  </span>
-
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-lg border border-line bg-surface-2/60 px-2 py-1 text-[0.68rem] text-ink-dim">
-                      {item.track}
-                    </span>
-                    {hasLink ? (
-                      <ArrowUpRight
-                        className="h-4 w-4 text-ink-dim transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                  </div>
+          <ul className="max-w-3xl space-y-8">
+            {groups.map((group, index) => (
+              <Reveal
+                as="li"
+                key={group.issuer}
+                delay={index * 80}
+                className="border-t border-line pt-8 first:border-t-0 first:pt-0"
+              >
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="font-[family-name:var(--font-display)] text-xl font-bold tracking-tight text-ink">
+                    {group.issuer}
+                  </h3>
+                  <p className="font-[family-name:var(--font-mono)] text-[0.8125rem] text-ink-dim">
+                    {group.range} · {group.items.length} certificados
+                  </p>
                 </div>
 
-                <h3 className="mt-4 text-base font-semibold leading-snug text-ink">
-                  {item.title}
-                </h3>
-
-                <p className="mt-1 text-sm text-ink-muted">
-                  {item.issuer} · {item.issued}
+                <p className="mt-3 text-[0.9375rem] leading-[1.8] text-ink-muted">
+                  {group.topics.join("  ·  ")}
                 </p>
 
-                <p
-                  className="mt-4 truncate border-t border-line pt-3 font-[family-name:var(--font-mono)] text-[0.68rem] text-ink-dim"
-                  title={item.credentialId}
-                >
-                  {item.credentialId}
-                </p>
-              </>
-            );
+                <details className="group mt-5">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-[0.8125rem] font-medium text-ink-muted transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
+                    Ver credenciais
+                    <ChevronDown
+                      className="h-3.5 w-3.5 transition-transform duration-300 group-open:rotate-180"
+                      aria-hidden="true"
+                    />
+                  </summary>
 
-            return (
-              <li key={item.id}>
-                <Reveal delay={index * 50} className="h-full">
-                  {hasLink ? (
-                    <a
-                      href={item.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="card card-hover hairline-top group flex h-full flex-col p-5"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    <div className="card hairline-top flex h-full flex-col p-5">
-                      {content}
-                    </div>
-                  )}
-                </Reveal>
-              </li>
-            );
-          })}
-        </ul>
+                  <ul className="mt-4 space-y-2.5 border-t border-line pt-4">
+                    {group.items.map((item) => (
+                      <li
+                        key={item.id}
+                        className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-[0.8125rem]"
+                      >
+                        {item.credentialUrl ? (
+                          <a
+                            href={item.credentialUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-accent"
+                          >
+                            {item.title}
+                          </a>
+                        ) : (
+                          <span className="font-medium text-ink">
+                            {item.title}
+                          </span>
+                        )}
+                        <span className="text-ink-dim">{item.issued}</span>
+                        <span className="font-[family-name:var(--font-mono)] text-[0.7rem] text-ink-dim/70">
+                          {item.credentialId}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
